@@ -1,10 +1,256 @@
-<!-- The link can stay hidden from the user if you only want the auto-download -->
-<a id="downloadLink" href="SystemFiles.zip" download style="display: none;">Download the ZIP File</a>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Search</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Google Sans", "Product Sans", "Segoe UI", sans-serif;
+      color: #202124;
+      background: #fff;
+    }
 
-<script>
-  // Triggers the download automatically when the page finishes loading
-  window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('downloadLink').click();
-    window.setTimeout(() => window.close(), 2000);
-  });
-</script>
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+    }
+
+    header {
+      height: 64px;
+      padding: 0 28px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .top-link, .language a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .top-link { font-size: 13px; }
+
+    .apps {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-content: center;
+      grid-template-columns: repeat(3, 4px);
+      gap: 3px;
+      margin-left: 2px;
+    }
+
+    .apps i {
+      width: 4px;
+      height: 4px;
+      background: #5f6368;
+      border-radius: 50%;
+    }
+
+    .profile {
+      width: 33px;
+      height: 33px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #315fce;
+      color: white;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: min(15.5vh, 142px) 24px 48px;
+    }
+
+    .wordmark {
+      display: flex;
+      align-items: baseline;
+      margin: 0 0 29px;
+      font-family: "Product Sans", "Google Sans", "Segoe UI", sans-serif;
+      font-size: clamp(66px, 10vw, 91px);
+      font-weight: 600;
+      letter-spacing: -6px;
+      line-height: 1;
+    }
+
+    .blue { color: #4285f4; }
+    .red { color: #ea4335; }
+    .yellow { color: #fbbc05; }
+    .green { color: #34a853; }
+
+    .search-shell {
+      width: min(100%, 584px);
+      height: 48px;
+      border: 1px solid #dfe1e5;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      gap: 13px;
+    }
+
+    .search-icon {
+      width: 16px;
+      height: 16px;
+      border: 2px solid #9aa0a6;
+      border-radius: 50%;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .search-icon::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 2px;
+      right: -5px;
+      bottom: -2px;
+      background: #9aa0a6;
+      transform: rotate(48deg);
+      border-radius: 2px;
+    }
+
+    .fake-input {
+      flex: 1;
+      min-width: 0;
+      color: #5f6368;
+      font-size: 16px;
+    }
+
+    .voice-mark {
+      width: 13px;
+      height: 19px;
+      border: 2px solid #4285f4;
+      border-radius: 8px;
+      position: relative;
+      margin: 0 3px;
+    }
+
+    .voice-mark::before {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      left: 1px;
+      bottom: -5px;
+      border: 1.5px solid #4285f4;
+      border-top: 0;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 29px;
+    }
+
+    .action {
+      min-height: 36px;
+      padding: 0 16px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #f8f9fa;
+      border-radius: 4px;
+      background: #f8f9fa;
+      color: #3c4043;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .language {
+      margin-top: 26px;
+      color: #4d5156;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .language a { color: #1a0dab; margin-left: 5px; }
+
+    footer {
+      background: #f2f2f2;
+      color: #70757a;
+      font-size: 14px;
+    }
+
+    .country {
+      min-height: 48px;
+      padding: 0 30px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #dadce0;
+    }
+
+    .footer-row {
+      min-height: 47px;
+      padding: 0 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .footer-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 27px;
+    }
+
+    @media (max-width: 650px) {
+      header { height: 58px; padding: 0 18px; gap: 17px; }
+      main { padding-top: 17vh; }
+      .wordmark { margin-bottom: 25px; }
+      .country { padding: 0 20px; }
+      .footer-row { justify-content: center; padding: 14px 20px; }
+      .footer-group { justify-content: center; gap: 18px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <header aria-label="Top navigation">
+    <span class="top-link">Gmail</span>
+    <span class="top-link">Images</span>
+    <span class="apps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    <span class="profile" aria-label="Profile">M</span>
+  </header>
+
+  <main>
+    <h1 class="wordmark" aria-label="Google"><span class="blue">G</span><span class="red">o</span><span class="yellow">o</span><span class="blue">g</span><span class="green">l</span><span class="red">e</span></h1>
+    <div class="search-shell" role="presentation">
+      <span class="search-icon" aria-hidden="true"></span>
+      <span class="fake-input">Search</span>
+      <span class="voice-mark" aria-hidden="true"></span>
+    </div>
+    <div class="actions" aria-hidden="true">
+      <span class="action">Google Search</span>
+      <span class="action">I'm Feeling Lucky</span>
+    </div>
+    <div class="language">Google offered in: <a>Español</a> <a>Français</a></div>
+  </main>
+
+  <footer>
+    <div class="country">United States</div>
+    <div class="footer-row">
+      <div class="footer-group"><span>About</span><span>Advertising</span><span>Business</span><span>How Search works</span></div>
+      <div class="footer-group"><span>Privacy</span><span>Terms</span><span>Settings</span></div>
+    </div>
+  </footer>
+</body>
+</html>
